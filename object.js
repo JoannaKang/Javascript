@@ -52,12 +52,68 @@ printValue(ellie, "name");
 const person1 = { name: "bob", age: 2 };
 const person2 = { name: "steve", age: 3 };
 const person3 = { name: "dave", age: 4 }; //-> 이런 반복을 줄이기 위해서
-const person4 = makePerson("ellie", 30);
+const person4 = new Person("ellie", 30);
 console.log(person4);
-function makePerson(name, age) {
-  //-> 이름, 나이를 입력해주는 함수를 이용해준다
-  return {
-    name, //-> key와 value의 값이 같으면 생략 가능 (name: name, - > name,으로 줄일 수 있다)
-    age,
-  };
+
+//-> 이름, 나이를 입력해주는 함수를 이용해준다
+//4. Constructor Function
+function Person(name, age) {
+  //->관습적으로 순수하게 오브젝트를 생성하는 함수는 첫글자를 대문자로 써줌
+  this.name; //-> key와 value의 값이 같으면 생략 가능 (name: name, - > name,으로 줄일 수 있다)
+  this.age;
 }
+
+//5. in operator: property existence check (key in obj)
+console.log("name" in ellie); //-> true
+console.log("age" in ellie); //->true
+console.log("random" in ellie); //->false
+console.log(ellie.random); //->undefined
+
+//6. for..in vs for..of
+//for (key in obj)
+console.clear();
+for (key in ellie) {
+  console.log(key);
+}
+
+//for (value of iterable)
+const array = [1, 2, 4, 5];
+
+for (let i = 0; i < array.length; i++) {
+  console.log(array[i]);
+}
+//to simplyfy
+for (value of array) {
+  console.log(value);
+}
+
+//7. Fun cloning
+//object.assign(dest, [obj1, obj2, obj3...])
+const user = { name: "ellie", age: "20" };
+const user2 = user;
+user2.name = "coder"; //-> user1에 할당된 name도 바뀌게 됨
+console.log(user);
+
+//아예 object를 복사하는 방법 : old way
+const user3 = {};
+for (key in user) {
+  user3[key] = user[key];
+}
+console.clear();
+console.log(user3);
+
+//object 자체를 복사하는 방법 : new way
+//(**cmd를 누르고 함수를 클릭하면 함수에 대한 자세한 정보를 볼 수 있다)
+const user4 = {};
+Object.assign(user4, user); //복사가 일어날 변수, 복사의 대상이 되는 원본을 파라미터로 넣어준다
+console.log(user4);
+//more simple ver.
+const user5 = Object.assign({}, user);
+console.log(user5);
+
+//another example
+const fruit1 = { color: "red" };
+const fruit2 = { color: "blue", size: "big" };
+const mixed = Object.assign({}, fruit1, fruit2);
+console.log(mixed.color); //-> blue가 출력됨 (뒤에 나오는 property가 앞의 property 값을 덮어쓰기때문)
+console.log(mixed.size);
